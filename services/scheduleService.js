@@ -64,3 +64,47 @@ module.exports = {
   getAllUsers,
 };
 
+// Получить расписание по диапазону дат
+async function getScheduleByRange(userId, startDate, endDate) {
+  await init();
+  const schedule = db.data.schedules[userId] || {};
+  const result = {};
+
+  for (const date in schedule) {
+    if (date >= startDate && date <= endDate) {
+      result[date] = schedule[date];
+    }
+  }
+
+  return result;
+}
+
+// Удалить событие по дате
+async function deleteSchedule(userId, date) {
+  await init();
+  if (db.data.schedules[userId]) {
+    delete db.data.schedules[userId][date];
+    await db.write();
+  }
+}
+
+// Изменить событие по дате
+async function editSchedule(userId, date, newText) {
+  await init();
+  if (db.data.schedules[userId] && db.data.schedules[userId][date]) {
+    db.data.schedules[userId][date] = newText;
+    await db.write();
+  }
+};
+
+module.exports = {
+  init,
+  getSchedule,
+  addSchedule,
+  getScheduleByRange,
+  deleteSchedule,
+  editSchedule
+};
+
+
+
