@@ -29,7 +29,7 @@ async function init() {
 
 
 // Добавить расписание
-async function addDay(userId, date, text) {
+async function addSchedule(userId, date, text) {
   await init();
 
   if (!db.data.schedules[userId]) {
@@ -39,6 +39,16 @@ async function addDay(userId, date, text) {
   db.data.schedules[userId][date] = text;
   await db.write();
 }
+
+module.exports = {
+  init,
+  getSchedule,
+  addSchedule,
+  getScheduleByRange,
+  deleteSchedule,
+  editSchedule
+};
+
 
 async function getSchedule(userId) {
   await init();
@@ -59,7 +69,7 @@ async function getAllUsers() {
 }
 
 module.exports = {
-  addDay,
+  addSchedule,
   getSchedule,
   getAllUsers,
 };
